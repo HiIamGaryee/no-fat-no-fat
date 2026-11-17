@@ -9,6 +9,5 @@ const localApi = ():Plugin=>({name:"local-chat-api",configureServer(server){serv
 export default defineConfig(({mode})=>{
   const env=loadEnv(mode,process.cwd(),"");
   if(env.GEMINI_API_KEY)process.env.GEMINI_API_KEY=env.GEMINI_API_KEY;
-  if(env.GEMINI_MODEL)process.env.GEMINI_MODEL=env.GEMINI_MODEL;
   return {plugins:[react(),localApi()],resolve:{alias:{"@":path.resolve(__dirname,"./src")}},build:{rollupOptions:{output:{manualChunks(id){if(id.includes("node_modules/motion"))return "motion";if(id.includes("node_modules/lucide-react"))return "icons";}}}},test:{environment:"jsdom",setupFiles:"./src/test/setup.ts",restoreMocks:true}};
 });

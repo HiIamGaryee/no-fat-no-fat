@@ -27,7 +27,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Set `GEMINI_API_KEY` server-side. `GEMINI_MODEL` defaults to `gemini-3.8-flash`.
+Set `GEMINI_API_KEY` server-side.
 
 ## Verification
 
