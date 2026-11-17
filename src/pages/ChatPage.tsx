@@ -40,6 +40,7 @@ export const ChatPage = () => {
       setExchanges(next);
       saveChat({ version:1, exchanges:next });
     } catch (reason) {
+      console.error("[chat] request failed", reason);
       if (reason instanceof Error && reason.name !== "AbortError") {
         setInput(message);
         setError(reason.name === "TimeoutError" ? "The coach took too long. Your message is ready to retry." : reason.message);
