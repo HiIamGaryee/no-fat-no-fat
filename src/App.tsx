@@ -11,7 +11,7 @@ import { ProgressPage } from "@/pages/ProgressPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { SettingsPage } from "@/pages/SettingsPage";
 import { ChatPage } from "@/pages/ChatPage";
-import { ScaffoldPage } from "@/pages/ScaffoldPage";
+import { ScaffoldPage } from "@/pages/NotFoundPage";
 import { LegalPage, cookiesSections, privacySections, termsSections } from "@/pages/LegalPage";
 const ToolsPage=lazy(()=>import("@/pages/tools/ToolsPage").then(module=>({default:module.ToolsPage})));
 const MidnightFoodPage=lazy(()=>import("@/pages/tools/MidnightFoodPage").then(module=>({default:module.MidnightFoodPage})));
