@@ -22,7 +22,7 @@ export const ChatPage = () => {
   const endRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior:"smooth" }), [exchanges, sending]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [exchanges, sending]);
 
   const submit = async (event?: FormEvent) => {
     event?.preventDefault();
