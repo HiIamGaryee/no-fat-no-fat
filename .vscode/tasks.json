@@ -1,0 +1,77 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE.*ready",
+          "endsPattern": "Local:"
+        }
+      },
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Build",
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Test",
+      "type": "npm",
+      "script": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": "$eslint-stylish"
+    },
+    {
+      "label": "Typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Check Translations",
+      "type": "npm",
+      "script": "i18n:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "Verify All",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Typecheck",
+        "Lint",
+        "Check Translations",
+        "Test",
+        "Build"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

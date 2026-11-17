@@ -7,11 +7,14 @@ import { buildInteractionHistory, sendChatMessage, toChatProfile } from "@/lib/c
 import { clearChat, loadChat, saveChat } from "@/lib/storage";
 import { toolActionUrl } from "@/lib/tools/tool-registry";
 import type { ChatExchange } from "@/types/chat";
+import { useI18n } from "@/i18n/config";
+import { translateUi } from "@/i18n/ui-translations";
 
 const prompts = ["I keep postponing exercise.", "Help me plan one healthy action today.", "My routine fell apart again."] as const;
 
 export const ChatPage = () => {
   const { profile } = useAppDataContext();
+  const { locale } = useI18n();
   const [exchanges, setExchanges] = useState<ChatExchange[]>(() => loadChat().exchanges);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -52,7 +55,7 @@ export const ChatPage = () => {
   };
 
   const reset = () => {
-    if (!window.confirm("Delete this browser's UNFIT AI conversation history?")) return;
+    if (!window.confirm(translateUi(locale,"Delete this browser's UNFIT AI conversation history?"))) return;
     abortRef.current?.abort();
     clearChat();
     setExchanges([]);
@@ -64,7 +67,7 @@ export const ChatPage = () => {
       <header className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink bg-pink p-4">
         <div className="flex items-center gap-3">
           <motion.div animate={{ rotate:[-2,2,-2] }} transition={{ duration:3,repeat:Infinity }} className="grid h-12 w-12 place-items-center rounded-full border-2 border-ink bg-ink text-lime"><Bot /></motion.div>
-          <div><h2 className="font-display text-2xl uppercase">UNFIT AI</h2><p className="text-xs font-bold uppercase">{profile.roastLevel} mode · {profile.locale}</p></div>
+          <div><h2 className="font-display text-2xl uppercase">UNFIT AI</h2><p className="text-xs font-bold uppercase">{profile.roastLevel} mode · {locale}</p></div>
         </div>
         <div className="flex gap-1">
           {sending && <button onClick={() => abortRef.current?.abort()} className="inline-flex min-h-11 items-center gap-2 px-3 text-xs font-bold uppercase"><X className="h-4 w-4" />Cancel</button>}
@@ -74,7 +77,7 @@ export const ChatPage = () => {
       <div className="grid min-h-[min(620px,calc(100dvh-190px))] grid-rows-[1fr_auto]">
         <div aria-live="polite" className="max-h-[calc(100dvh-310px)] min-h-[360px] overflow-y-auto bg-cream p-4 md:p-6">
           {!exchanges.length && <div className="mx-auto grid max-w-xl place-items-center py-12 text-center"><div className="grid h-24 w-24 place-items-center rounded-full border-2 border-ink bg-lime font-display text-4xl shadow-[6px_6px_0_var(--ink)]">AI</div><h3 className="mt-7 font-display text-4xl uppercase">YOUR EXCUSE. MY DESK.</h3><p className="mt-3 max-w-md font-medium">Ask for a practical next move. The roast is optional. The useful answer is not.</p><div className="mt-7 flex flex-wrap justify-center gap-2">{prompts.map((prompt) => <button key={prompt} onClick={() => setInput(prompt)} className="min-h-11 border-2 border-ink bg-white px-3 text-sm font-bold hover:bg-yellow">{prompt}</button>)}</div></div>}
-          {exchanges.map((exchange) => <div key={exchange.id} className="mx-auto mb-7 max-w-3xl space-y-3"><div className="ms-auto flex max-w-[92%] items-start justify-end gap-2"><div className="min-w-0 break-words rounded-s-2xl rounded-br-2xl border-2 border-ink bg-blue p-4 font-medium text-white">{exchange.user}</div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-white"><UserRound className="h-4 w-4" /></span></div><div className="flex max-w-[94%] items-start gap-2"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-pink"><Bot className="h-4 w-4" /></span><div className="min-w-0"><div className="whitespace-pre-wrap break-words rounded-e-2xl rounded-bl-2xl border-2 border-ink bg-white p-4 font-medium leading-relaxed shadow-[3px_3px_0_var(--ink)]">{exchange.assistant}</div>{exchange.action && <Link to={toolActionUrl(exchange.action)} className="mt-3 inline-flex min-h-12 items-center gap-2 border-2 border-ink bg-lime px-4 font-bold uppercase shadow-[3px_3px_0_var(--ink)]">Open recommended action<ArrowUpRight /></Link>}</div></div></div>)}
+          {exchanges.map((exchange) => <div key={exchange.id} className="mx-auto mb-7 max-w-3xl space-y-3"><div className="ms-auto flex max-w-[92%] items-start justify-end gap-2"><div data-i18n-skip className="chat-message min-w-0 break-words rounded-s-2xl rounded-br-2xl border-2 border-ink bg-blue p-4 font-medium text-white">{exchange.user}</div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-white"><UserRound className="h-4 w-4" /></span></div><div className="flex max-w-[94%] items-start gap-2"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-pink"><Bot className="h-4 w-4" /></span><div className="min-w-0"><div data-i18n-skip className="chat-message whitespace-pre-wrap break-words rounded-e-2xl rounded-bl-2xl border-2 border-ink bg-white p-4 font-medium leading-relaxed shadow-[3px_3px_0_var(--ink)]">{exchange.assistant}</div>{exchange.action && <Link to={toolActionUrl(exchange.action)} className="mt-3 inline-flex min-h-12 items-center gap-2 border-2 border-ink bg-lime px-4 font-bold uppercase shadow-[3px_3px_0_var(--ink)]">Open recommended action<ArrowUpRight /></Link>}</div></div></div>)}
           {sending && <div className="mx-auto flex max-w-3xl items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full border-2 border-ink bg-pink"><Bot className="h-4 w-4" /></span><div className="typing-dots border-2 border-ink bg-white"><i /><i /><i /></div></div>}
           <div ref={endRef} />
         </div>

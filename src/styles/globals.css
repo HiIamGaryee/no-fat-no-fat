@@ -41,6 +41,11 @@ img, svg { max-width: 100%; }
 }
 
 [dir="rtl"] .font-display { font-family: "Noto Kufi Arabic", "DM Sans", sans-serif; letter-spacing: 0; }
+.chat-message { direction: auto; unicode-bidi: plaintext; }
+html:lang(hi-IN) body, html:lang(hi-IN) .font-display, html:lang(hi-IN) .font-accent { font-family: "Noto Sans Devanagari", "DM Sans", sans-serif; line-height: 1.35; }
+html:lang(zh-CN) body, html:lang(zh-CN) .font-display, html:lang(zh-CN) .font-accent { font-family: "Noto Sans SC", "DM Sans", sans-serif; letter-spacing: 0; }
+html:lang(yue-Hant) body, html:lang(yue-Hant) .font-display, html:lang(yue-Hant) .font-accent { font-family: "Noto Sans TC", "DM Sans", sans-serif; letter-spacing: 0; }
+html:lang(ar-AE) input, html:lang(ar-AE) textarea, html:lang(ar-AE) select { text-align: start; }
 .font-arabic { font-family: "Noto Kufi Arabic", "DM Sans", sans-serif; }
 .high-readability { font-size: 112.5%; }
 .user-reduced-motion *, .user-reduced-motion *::before, .user-reduced-motion *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -63,6 +68,7 @@ img, svg { max-width: 100%; }
 @media (max-width: 374px) {
   .page-shell { padding-left: 16px; padding-right: 16px; }
   .display-title { letter-spacing: -.035em; }
+  button, a { overflow-wrap: anywhere; }
 }
 
 @media (prefers-reduced-motion: reduce) {

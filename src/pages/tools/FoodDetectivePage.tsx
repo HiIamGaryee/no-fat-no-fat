@@ -99,7 +99,7 @@ export const FoodDetectivePage = () => {
                 <label className="mt-4 block font-bold">
                   Comparison basis
                   <select className="brand-input" value={food.basis} onChange={(event) => update(side, "basis", event.target.value)}>
-                    {["per 100 g/ml", "per declared serving"].map((basis) => <option key={basis}>{basis}</option>)}
+                    {["per 100 g/ml", "per declared serving"].map((basis) => <option key={basis} value={basis}>{basis}</option>)}
                   </select>
                 </label>
                 <div className="mt-4 grid grid-cols-2 gap-3">
