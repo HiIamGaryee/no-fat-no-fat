@@ -658,13 +658,16 @@ export type QualityIssue =
   | "body"
   | "nag"
   | "repeat"
-  | "theatrical";
+  | "theatrical"
+  | "profanity";
 
 const theatricalPatterns = [
   /合約第|合同第|法庭(?:宣佈|宣布)|深夜食堂|催淚|催泪|失蹤人口|失踪人口|緊急會議|紧急会议|政府工程|政府项目|無薪假|无薪假/,
   /(?:courtroom|contract clause|missing-person report|emergency meeting|government project|unpaid leave)/i,
   /(?:你個|你的)(?:胃|雪櫃|冰箱|梳化|沙發|鞋|目標|靈魂).{0,10}(?:永動機|黑洞|垃圾桶|裝飾|保安|收工|拍拖|人格)/,
 ];
+const cantoneseProfanity = /痴線|搞乜鬼|頂你|屌|仆街|搞乜鳩|乜撚嘢/;
+const strongCantoneseProfanity = /屌|仆街|搞乜鳩|乜撚嘢/;
 
 /** Server-side guard against personality drift; the model's own words are never trusted blindly. */
 const squash = (value: string) =>
@@ -724,6 +727,16 @@ export const qualityIssues = (
     issues.push("caving");
   if (matches(text, affectionPatterns)) issues.push("affection");
   if (matches(text, theatricalPatterns)) issues.push("theatrical");
+  if (
+    (state.safety ||
+      state.concern === "safety" ||
+      state.concern === "genuine_hunger" ||
+      state.concern === "night_shift_meal") &&
+    cantoneseProfanity.test(text)
+  )
+    issues.push("profanity");
+  else if (state.roast === "sarcastic" && strongCantoneseProfanity.test(text))
+    issues.push("profanity");
   if (
     !state.safety &&
     matches(
@@ -840,7 +853,8 @@ export const scrubBubbles = (
           issue === "body" ||
           issue === "affection" ||
           issue === "caving" ||
-          issue === "theatrical",
+          issue === "theatrical" ||
+          issue === "profanity",
       ),
     )
   ) {

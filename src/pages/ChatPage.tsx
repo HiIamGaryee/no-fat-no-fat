@@ -1,15 +1,16 @@
 import { type FormEvent, type KeyboardEvent, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Bot, Send, ShieldCheck, Trash2, UserRound, X } from "lucide-react";
+import { ArrowUpRight, Bot, Send, ShieldCheck, Square, Trash2, UserRound, Volume2, VolumeX, X } from "lucide-react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useAppDataContext } from "@/components/app/AppDataContext";
 import { buildInteractionHistory, formatAssistantBubbles, sendChatMessage, toChatProfile } from "@/lib/chat";
-import { clearChat, loadChat, loadCoachState, saveChat } from "@/lib/storage";
+import { clearChat, loadChat, loadCoachState, loadSettings, saveChat } from "@/lib/storage";
 import { toolActionUrl } from "@/lib/tools/tool-registry";
 import type { ChatExchange } from "@/types/chat";
 import { useI18n } from "@/i18n/config";
 import { translateUi } from "@/i18n/ui-translations";
 import type { Locale } from "@/types/profile";
+import { useCantoneseSpeech } from "@/hooks/use-cantonese-speech";
 
 const prompts = ["I keep postponing exercise.", "Help me plan one healthy action today.", "My routine fell apart again."] as const;
 const actionCopy = [
@@ -23,7 +24,7 @@ const actionCopy = [
   ["suggest_mission","DO SOMETHING","One small mission. Right now.","START"],
 ] as const;
 
-const AssistantTurn = ({ exchange, animate, locale, onQuickReply }:{ exchange:ChatExchange;animate:boolean;locale:Locale;onQuickReply:(reply:string)=>void }) => {
+const AssistantTurn = ({ exchange, animate, locale, onQuickReply, voiceAvailable, speaking, onPlayVoice, onStopVoice }:{ exchange:ChatExchange;animate:boolean;locale:Locale;onQuickReply:(reply:string)=>void;voiceAvailable:boolean;speaking:boolean;onPlayVoice:()=>void;onStopVoice:()=>void }) => {
   const bubbles=formatAssistantBubbles(exchange.bubbles,exchange.assistant);
   const [visible,setVisible]=useState(animate?1:bubbles.length);
   const copy=actionCopy.find(([id])=>id===exchange.action?.id);
@@ -41,6 +42,7 @@ const AssistantTurn = ({ exchange, animate, locale, onQuickReply }:{ exchange:Ch
     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-pink"><Bot className="h-4 w-4" /></span>
     <div className="min-w-0">
       <div className="flex flex-col items-start gap-2">{bubbles.slice(0,visible).map((bubble,index)=><motion.div key={`${exchange.id}-${index}`} initial={animate?{opacity:0,y:5}:false} animate={{opacity:1,y:0}} data-i18n-skip className="chat-message w-fit max-w-full whitespace-pre-wrap break-words rounded-e-2xl rounded-bl-2xl border-2 border-ink bg-white px-3.5 py-2.5 font-medium leading-snug shadow-[3px_3px_0_var(--ink)]">{bubble}</motion.div>)}</div>
+      {complete&&locale==="yue-Hant"?<button type="button" onClick={speaking?onStopVoice:onPlayVoice} disabled={!voiceAvailable} title={voiceAvailable?(speaking?"停止播放":"播放廣東話"):"此瀏覽器未有廣東話語音"} className="mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border-2 border-ink bg-white px-3 text-xs font-bold disabled:cursor-not-allowed disabled:opacity-50">{voiceAvailable?(speaking?<><Square className="h-3.5 w-3.5"/>停止</>:<><Volume2 className="h-4 w-4"/>播放廣東話</>):<><VolumeX className="h-4 w-4"/>未有廣東話語音</>}</button>:null}
       {complete&&copy&&exchange.action&&<Link to={toolActionUrl(exchange.action)} className="mt-3 block max-w-sm border-2 border-ink bg-lime p-3 shadow-[3px_3px_0_var(--ink)] transition-transform hover:-translate-y-0.5"><span className="flex items-center justify-between gap-3 font-display text-lg uppercase"><span>{translateUi(locale,copy[1])}</span><ArrowUpRight className="h-5 w-5 shrink-0" /></span><span className="mt-0.5 block text-xs font-medium normal-case">{translateUi(locale,copy[2])}</span><span className="mt-2 block text-xs font-black uppercase">{translateUi(locale,copy[3])}</span></Link>}
       {complete&&exchange.quickReplies?.length?<div className="mt-3 flex flex-wrap gap-2">{exchange.quickReplies.map(reply=><button key={reply} type="button" onClick={()=>onQuickReply(reply)} className="min-h-10 rounded-full border-2 border-ink bg-white px-3 text-sm font-bold hover:bg-yellow">{reply}</button>)}</div>:null}
     </div>
@@ -58,6 +60,8 @@ export const ChatPage = () => {
   const [revealingId, setRevealingId] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const speech = useCantoneseSpeech();
+  const voiceAutoplay = loadSettings().voiceAutoplay;
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [exchanges, sending]);
 
@@ -79,6 +83,7 @@ export const ChatPage = () => {
       setExchanges(next);
       setPendingUser("");
       saveChat({ version:1, exchanges:next, coach:result.coach });
+      if (locale==="yue-Hant"&&voiceAutoplay) window.setTimeout(()=>speech.play(exchange.id,formatAssistantBubbles(exchange.bubbles,exchange.assistant).join("。")),450);
     } catch (reason) {
       console.error("[chat] request failed", reason);
       if (reason instanceof Error && reason.name !== "AbortError") {
@@ -100,6 +105,7 @@ export const ChatPage = () => {
     if (!window.confirm(translateUi(locale,"Delete this browser's UNFIT AI conversation history?"))) return;
     abortRef.current?.abort();
     clearChat();
+    speech.stop();
     setExchanges([]);
     setError("");
   };
@@ -119,7 +125,7 @@ export const ChatPage = () => {
       <div className="grid min-h-[min(620px,calc(100dvh-190px))] grid-rows-[1fr_auto]">
         <div aria-live="polite" className="max-h-[calc(100dvh-310px)] min-h-[360px] overflow-y-auto bg-cream p-4 md:p-6">
           {!exchanges.length && <div className="mx-auto grid max-w-xl place-items-center py-12 text-center"><div className="grid h-24 w-24 place-items-center rounded-full border-2 border-ink bg-lime font-display text-4xl shadow-[6px_6px_0_var(--ink)]">AI</div><h3 className="mt-7 font-display text-4xl uppercase">YOUR EXCUSE. MY DESK.</h3><p className="mt-3 max-w-md font-medium">Ask for a practical next move. The roast is optional. The useful answer is not.</p><div className="mt-7 flex flex-wrap justify-center gap-2">{prompts.map((prompt) => <button key={prompt} onClick={() => setInput(prompt)} className="min-h-11 border-2 border-ink bg-white px-3 text-sm font-bold hover:bg-yellow">{prompt}</button>)}</div></div>}
-          {exchanges.map((exchange) => <div key={exchange.id} className="mx-auto mb-7 max-w-3xl space-y-3"><div className="ms-auto flex max-w-[86%] items-start justify-end gap-2 sm:max-w-[72%]"><div data-i18n-skip className="chat-message min-w-0 whitespace-pre-wrap break-words rounded-s-2xl rounded-br-2xl border-2 border-ink bg-blue px-3.5 py-2.5 font-medium leading-snug text-white">{exchange.user}</div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-white"><UserRound className="h-4 w-4" /></span></div><AssistantTurn exchange={exchange} animate={exchange.id===revealingId} locale={locale} onQuickReply={reply=>{setInput(reply);requestAnimationFrame(()=>document.querySelector<HTMLTextAreaElement>("#chat-message")?.focus());}} /></div>)}
+          {exchanges.map((exchange) => <div key={exchange.id} className="mx-auto mb-7 max-w-3xl space-y-3"><div className="ms-auto flex max-w-[86%] items-start justify-end gap-2 sm:max-w-[72%]"><div data-i18n-skip className="chat-message min-w-0 whitespace-pre-wrap break-words rounded-s-2xl rounded-br-2xl border-2 border-ink bg-blue px-3.5 py-2.5 font-medium leading-snug text-white">{exchange.user}</div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-white"><UserRound className="h-4 w-4" /></span></div><AssistantTurn exchange={exchange} animate={exchange.id===revealingId} locale={locale} voiceAvailable={speech.available} speaking={speech.speakingId===exchange.id} onPlayVoice={()=>speech.play(exchange.id,formatAssistantBubbles(exchange.bubbles,exchange.assistant).join("。"))} onStopVoice={speech.stop} onQuickReply={reply=>{setInput(reply);requestAnimationFrame(()=>document.querySelector<HTMLTextAreaElement>("#chat-message")?.focus());}} /></div>)}
           {pendingUser&&<div className="mx-auto mb-3 flex max-w-3xl justify-end"><div className="flex max-w-[86%] items-start justify-end gap-2 sm:max-w-[72%]"><div data-i18n-skip className="chat-message min-w-0 whitespace-pre-wrap break-words rounded-s-2xl rounded-br-2xl border-2 border-ink bg-blue px-3.5 py-2.5 font-medium leading-snug text-white">{pendingUser}</div><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-ink bg-white"><UserRound className="h-4 w-4" /></span></div></div>}
           {sending && <div className="mx-auto flex max-w-3xl items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full border-2 border-ink bg-pink"><Bot className="h-4 w-4" /></span><div className="typing-dots border-2 border-ink bg-white"><i /><i /><i /></div></div>}
           <div ref={endRef} />
