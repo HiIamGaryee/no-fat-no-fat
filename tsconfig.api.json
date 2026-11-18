@@ -9,5 +9,9 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["api/**/*.ts", "netlify/functions/**/*.ts"]
+  "include": [
+    "api/**/*.ts",
+    "netlify/functions/**/*.ts",
+    "src/lib/craving-policy.ts"
+  ]
 }

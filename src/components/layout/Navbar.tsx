@@ -27,7 +27,7 @@ export const Navbar = () => {
       <BrandLogo className="text-sm sm:text-base" />
       <div className="hidden items-center gap-1 lg:flex">{links.map((link) => <a key={link.href} href={link.href} className="rounded-full px-3 py-3 text-xs font-bold uppercase hover:bg-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue">{t(link.key)}</a>)}</div>
       <div className="flex items-center gap-2">
-        <span data-i18n-skip className="hidden sm:block"><Select id="global-locale" label="Language" compact value={locale} onChange={setLocale} options={localeOptions}/></span>
+        <span className="hidden sm:block"><Select id="global-locale" label="Language" compact value={locale} onChange={setLocale} options={localeOptions}/></span>
         <Button asChild className="min-h-10 rounded-full border-2 px-4 text-xs shadow-none"><Link to={tryPath}>{t("tryNow")}</Link></Button>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild><Button size="icon" variant="ghost" className="rounded-full shadow-none lg:hidden" aria-label="Open menu"><Menu /></Button></SheetTrigger>

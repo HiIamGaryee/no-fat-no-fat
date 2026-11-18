@@ -4,10 +4,183 @@ import { motion } from "motion/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDataContext } from "@/components/app/AppDataContext";
 import { ToolLayout } from "@/components/tools/ToolLayout";
-import { buildInteractionHistory, sendChatMessage, toChatProfile } from "@/lib/chat";
+import {
+  buildInteractionHistory,
+  sendChatMessage,
+  toChatProfile,
+} from "@/lib/chat";
 import { loadChat, loadToolEvents } from "@/lib/storage";
 import { createToolEvent } from "@/lib/tools/tool-events";
+import { evaluateCravingPolicy } from "@/lib/craving-policy";
 
-const excuses=["No time","Too tired","I'll start tomorrow","I forgot","Bad weather","No motivation","Missed several days","Work was exhausting","Other"] as const;
-const localVerdict=(excuse:string,minutes:number)=>`The court reviewed “${excuse}” and found it suspiciously well rehearsed. Sentence: one ${minutes}-minute trial action today. Rest remains legal when genuinely needed.`;
-export const ExcuseCourtPage=()=>{const {profile}=useAppDataContext();const [params]=useSearchParams();const navigate=useNavigate();const suggested=(params.get("context")??"").slice(0,300);const [excuse,setExcuse]=useState(suggested||"");const [verdict,setVerdict]=useState("");const [source,setSource]=useState<"gemini"|"local"|"">("");const [loading,setLoading]=useState(false);const prior=loadToolEvents().events.filter(item=>item.tool==="excuse-court");const investigate=async()=>{if(!excuse.trim())return;setLoading(true);const repeats=prior.filter(item=>item.metadata.excuse===excuse).length;try{const response=await sendChatMessage({message:`Excuse Court case: "${excuse}". Deliver a concise humorous verdict and a realistic ${profile.preferredMissionMinutes}-minute action. Real evidence: this exact excuse appears ${repeats} time(s) in saved case history. Do not invent other history.`,history:buildInteractionHistory(loadChat().exchanges),profile:toChatProfile(profile)});setVerdict(response.text);setSource("gemini");}catch{setVerdict(localVerdict(excuse,profile.preferredMissionMinutes));setSource("local");}finally{setLoading(false);}};const chooseAction=(minutes:number)=>{const event=createToolEvent("excuse_case_created","excuse-court",excuse,{excuse,minutes,status:"action_selected"});navigate(`/app/tools/movement-roulette?context=${encodeURIComponent(excuse)}&minutes=${minutes}&case=${event.id}`);};return <ToolLayout number="02" title="EXCUSE COURT" tagline="OBJECTION. THAT'S AN EXCUSE." color="bg-orange"><div className="grid gap-6 xl:grid-cols-[.8fr_1.2fr]"><section className="border-2 border-ink bg-white p-5"><motion.div animate={loading?{rotate:[0,-18,0]}:{}} className="inline-block origin-bottom"><Gavel className="h-20 w-20"/></motion.div><h3 className="font-display text-3xl uppercase">THE ACCUSED EXCUSE</h3><div className="mt-4 flex flex-wrap gap-2">{excuses.map(item=><button key={item} onClick={()=>setExcuse(item==="Other"?"":item)} className={`min-h-11 border-2 border-ink px-3 font-bold ${excuse===item?"bg-lime":"bg-cream"}`}>{item}</button>)}</div><label className="mt-5 block font-bold">Your statement<textarea value={excuse} onChange={event=>setExcuse(event.target.value)} maxLength={300} rows={3} className="brand-input resize-none"/></label><p className="mt-3 text-xs">Saved matching cases: {prior.filter(item=>item.metadata.excuse===excuse).length}</p><button onClick={investigate} disabled={!excuse.trim()||loading} className="app-button mt-5 bg-yellow disabled:opacity-40">{loading?<LoaderCircle className="animate-spin"/>:<Scale/>}Request verdict</button></section>{verdict?<motion.section initial={{scale:.96,opacity:0}} animate={{scale:1,opacity:1}} className="border-2 border-ink bg-ink p-6 text-white shadow-[7px_7px_0_var(--lime)]"><span className="border border-white px-2 py-1 text-[10px] font-bold uppercase">{source==="gemini"?"Gemini verdict":"Local fallback · Gemini unavailable"}</span><h3 className="mt-5 font-display text-4xl text-lime">COURT ORDER</h3><p className="mt-4 whitespace-pre-wrap text-lg font-medium leading-relaxed">{verdict}</p><div className="mt-7 flex flex-wrap gap-3">{[2,5,10].map(minutes=><button key={minutes} onClick={()=>chooseAction(minutes)} className="app-button bg-pink text-ink">Start {minutes}-min action</button>)}<button onClick={()=>createToolEvent("excuse_case_created","excuse-court",excuse,{excuse,status:"rest_chosen"})} className="min-h-12 px-3 font-bold underline">Rest today</button></div></motion.section>:<section className="grid min-h-72 place-items-center border-2 border-dashed border-ink p-8 text-center"><strong className="font-display text-3xl">COURT AWAITS EVIDENCE.</strong></section>}</div></ToolLayout>;};
+const excuses = [
+  "No time",
+  "Too tired",
+  "I'll start tomorrow",
+  "I forgot",
+  "Bad weather",
+  "No motivation",
+  "Missed several days",
+  "Work was exhausting",
+  "Just one bite",
+  "I'll stop tomorrow",
+  "I deserve another snack",
+  "I'm bored",
+  "It's only a small supper",
+  "Other",
+] as const;
+const localVerdict = (excuse: string, minutes: number, schedule = "") => {
+  const approach = evaluateCravingPolicy(excuse, { schedule }).approach;
+  return approach === "interrupt_impulse" || approach === "bedtime_shutdown"
+    ? "That snack excuse has more sequels than talent. Close the fridge or delivery app and do something else for five minutes."
+    : `The court reviewed “${excuse}” and found it suspiciously well rehearsed. Sentence: one ${minutes}-minute trial action today. Rest remains legal when genuinely needed.`;
+};
+export const ExcuseCourtPage = () => {
+  const { profile } = useAppDataContext();
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const suggested = (params.get("context") ?? "").slice(0, 300);
+  const [excuse, setExcuse] = useState(suggested || "");
+  const [verdict, setVerdict] = useState("");
+  const [source, setSource] = useState<"gemini" | "local" | "">("");
+  const [loading, setLoading] = useState(false);
+  const prior = loadToolEvents().events.filter(
+    (item) => item.tool === "excuse-court",
+  );
+  const investigate = async () => {
+    if (!excuse.trim()) return;
+    setLoading(true);
+    const repeats = prior.filter(
+      (item) => item.metadata.excuse === excuse,
+    ).length;
+    try {
+      const response = await sendChatMessage({
+        message: `Excuse Court case: "${excuse}". Deliver a concise humorous verdict and a realistic ${profile.preferredMissionMinutes}-minute action. Real evidence: this exact excuse appears ${repeats} time(s) in saved case history. Do not invent other history.`,
+        history: buildInteractionHistory(loadChat().exchanges),
+        profile: toChatProfile(profile),
+      });
+      setVerdict(response.text);
+      setSource("gemini");
+    } catch {
+      setVerdict(localVerdict(excuse, profile.preferredMissionMinutes));
+      setSource("local");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const chooseAction = (minutes: number) => {
+    const event = createToolEvent(
+      "excuse_case_created",
+      "excuse-court",
+      excuse,
+      { excuse, minutes, status: "action_selected" },
+    );
+    navigate(
+      `/app/tools/movement-roulette?context=${encodeURIComponent(excuse)}&minutes=${minutes}&case=${event.id}`,
+    );
+  };
+  return (
+    <ToolLayout
+      number="02"
+      title="EXCUSE COURT"
+      tagline="OBJECTION. THAT'S AN EXCUSE."
+      color="bg-orange"
+    >
+      <div className="grid gap-6 xl:grid-cols-[.8fr_1.2fr]">
+        <section className="border-2 border-ink bg-white p-5">
+          <motion.div
+            animate={loading ? { rotate: [0, -18, 0] } : {}}
+            className="inline-block origin-bottom"
+          >
+            <Gavel className="h-20 w-20" />
+          </motion.div>
+          <h3 className="font-display text-3xl uppercase">
+            THE ACCUSED EXCUSE
+          </h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {excuses.map((item) => (
+              <button
+                key={item}
+                onClick={() => setExcuse(item === "Other" ? "" : item)}
+                className={`min-h-11 border-2 border-ink px-3 font-bold ${excuse === item ? "bg-lime" : "bg-cream"}`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <label className="mt-5 block font-bold">
+            Your statement
+            <textarea
+              value={excuse}
+              onChange={(event) => setExcuse(event.target.value)}
+              maxLength={300}
+              rows={3}
+              className="brand-input resize-none"
+            />
+          </label>
+          <p className="mt-3 text-xs">
+            Saved matching cases:{" "}
+            {prior.filter((item) => item.metadata.excuse === excuse).length}
+          </p>
+          <button
+            onClick={investigate}
+            disabled={!excuse.trim() || loading}
+            className="app-button mt-5 bg-yellow disabled:opacity-40"
+          >
+            {loading ? <LoaderCircle className="animate-spin" /> : <Scale />}
+            Request verdict
+          </button>
+        </section>
+        {verdict ? (
+          <motion.section
+            initial={{ scale: 0.96, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="border-2 border-ink bg-ink p-6 text-white shadow-[7px_7px_0_var(--lime)]"
+          >
+            <span className="border border-white px-2 py-1 text-[10px] font-bold uppercase">
+              {source === "gemini"
+                ? "Gemini verdict"
+                : "Local fallback · Gemini unavailable"}
+            </span>
+            <h3 className="mt-5 font-display text-4xl text-lime">
+              COURT ORDER
+            </h3>
+            <p className="mt-4 whitespace-pre-wrap text-lg font-medium leading-relaxed">
+              {verdict}
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              {[2, 5, 10].map((minutes) => (
+                <button
+                  key={minutes}
+                  onClick={() => chooseAction(minutes)}
+                  className="app-button bg-pink text-ink"
+                >
+                  Start {minutes}-min action
+                </button>
+              ))}
+              <button
+                onClick={() =>
+                  createToolEvent(
+                    "excuse_case_created",
+                    "excuse-court",
+                    excuse,
+                    { excuse, status: "rest_chosen" },
+                  )
+                }
+                className="min-h-12 px-3 font-bold underline"
+              >
+                Rest today
+              </button>
+            </div>
+          </motion.section>
+        ) : (
+          <section className="grid min-h-72 place-items-center border-2 border-dashed border-ink p-8 text-center">
+            <strong className="font-display text-3xl">
+              COURT AWAITS EVIDENCE.
+            </strong>
+          </section>
+        )}
+      </div>
+    </ToolLayout>
+  );
+};

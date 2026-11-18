@@ -23,6 +23,9 @@ entries.forEach((entry, index) => {
   seen.add(entry[0]);
 });
 
+const catalogLine = catalogSource.split("\n").findIndex((line) => line.startsWith("const catalogs"));
+catalogSource.split("\n").forEach((line, index) => { if (catalogLine >= 0 && index > catalogLine && line.startsWith("entries.push(")) critical.push(`entries.push at line ${index + 1} runs after catalogs is built (line ${catalogLine + 1}); those entries are never translated.`); });
+
 const sourceFiles = [];
 const walk = async (directory) => {
   for (const name of await readdir(directory, { withFileTypes:true })) {

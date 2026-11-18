@@ -606,19 +606,107 @@ entries.push(
   ["Changes","变更","更改","التغييرات","परिवर्तन"]
 );
 
+entries.push(
+  ["Want to sleep","想睡觉","想瞓覺","أريد النوم","सोना चाहता/चाहती हूँ"],
+  ["If you ate recently and bedtime is close, skip the snack and go to sleep.","如果刚吃过而且快到睡觉时间，就别吃零食了，去睡觉。","啱啱食過又就快瞓，就咪再食零食，去瞓覺。","إذا أكلت مؤخراً واقترب موعد نومك، فتجاوز الوجبة الخفيفة ونم.","अगर अभी खाया है और सोने का समय है, नाश्ता छोड़कर सो जाएँ।"],
+  ["If hunger grows or feels physical, reassess it honestly.","如果饥饿变强或有明显身体感觉，再诚实判断。","如果真係越嚟越肚餓，就老實再判斷。","إذا زاد الجوع أو أصبح جسدياً، فأعد تقييمه بصدق.","अगर भूख बढ़े या सच में महसूस हो, ईमानदारी से फिर जाँचें।"],
+  ["A craving is a suggestion, not a court order.","嘴馋只是建议，不是法院命令。","口痕只係提議，唔係法庭命令。","الاشتهاء اقتراح، وليس أمراً قضائياً.","लालसा सुझाव है, अदालत का आदेश नहीं।"],
+  ["Close the kitchen and change the activity for five minutes.","离开厨房，换个活动做五分钟。","閂咗廚房，轉第二樣嘢做五分鐘。","غادر المطبخ وغيّر نشاطك لخمس دقائق.","रसोई बंद करें और पाँच मिनट कोई दूसरा काम करें।"],
+  ["If physical hunger remains, reassess without the boredom costume.","如果身体饥饿仍在，就别拿无聊当伪装，重新判断。","如果真肚餓仲喺度，就除低個悶樣再判斷。","إذا بقي الجوع الجسدي، فأعد تقييمه من دون قناع الملل.","अगर असली भूख रहे, बोरियत का भेष हटाकर फिर जाँचें।"],
+  ["Your fridge is not an entertainment subscription.","你的冰箱不是娱乐订阅。","你個雪櫃唔係娛樂月費。","ثلاجتك ليست اشتراكاً ترفيهياً.","आपका फ़्रिज मनोरंजन की सदस्यता नहीं है।"],
+  ["Sleep is the plan, not another fridge meeting.","计划是睡觉，不是再开一次冰箱会议。","計劃係瞓覺，唔係再開雪櫃會議。","الخطة هي النوم، لا اجتماع آخر مع الثلاجة.","योजना सोने की है, फ़्रिज के साथ दूसरी बैठक की नहीं।"],
+  ["If you ate recently and aren't physically hungry, put the phone away and sleep.","如果刚吃过而且身体并不饿，放下手机睡觉。","啱啱食過又唔係真肚餓，就收手機瞓覺。","إذا أكلت مؤخراً ولست جائعاً جسدياً، فأبعد الهاتف ونم.","अगर अभी खाया है और सच में भूख नहीं, फ़ोन रखकर सो जाएँ।"],
+  ["If you are genuinely hungry, reassess instead of forcing sleep through it.","如果真的饿了，就重新判断，不要硬撑着睡。","如果真係肚餓，就再判斷，唔好夾硬瞓。","إذا كنت جائعاً فعلاً، فأعد التقييم بدلاً من إجبار نفسك على النوم.","अगर सच में भूख है, ज़बरदस्ती सोने के बजाय फिर जाँचें।"],
+  ["Habitual snacking does not need a bedtime encore.","习惯性吃零食不需要睡前返场。","習慣性食零食唔使瞓前 encore。","تناول الوجبات الخفيفة كعادة لا يحتاج عرضاً إضافياً قبل النوم.","आदतन नाश्ते को सोने से पहले दोबारा मंच नहीं चाहिए।"],
+  ["You ate recently. The fridge is filing a duplicate request.","你刚吃过。冰箱正在提交重复申请。","你啱啱食過。個雪櫃正提交重複申請。","لقد أكلت مؤخراً. الثلاجة تقدم طلباً مكرراً.","आपने अभी खाया है। फ़्रिज दोबारा आवेदन दे रहा है।"],
+  ["Skip the unnecessary snack, put the phone away, and go to sleep.","跳过不必要的零食，放下手机去睡觉。","咪食多餘零食，收手機，去瞓覺。","تجاوز الوجبة الخفيفة غير الضرورية، وأبعد الهاتف، ونم.","ग़ैरज़रूरी नाश्ता छोड़ें, फ़ोन रखें और सो जाएँ।"],
+  ["If clear physical hunger appears, reassess it instead of guessing.","如果出现明确的身体饥饿感，就重新判断，不要猜。","如果真係有明顯肚餓感，就再判斷，唔好估。","إذا ظهر جوع جسدي واضح، فأعد تقييمه بدلاً من التخمين.","अगर साफ़ असली भूख लगे, अंदाज़ा लगाने के बजाय फिर जाँचें।"],
+  ["Bedtime boredom does not need catering.","睡前无聊不需要餐饮服务。","瞓前悶唔需要到會服務。","ملل وقت النوم لا يحتاج خدمة طعام.","सोने से पहले की बोरियत को खानपान सेवा नहीं चाहिए।"],
+  ["FRIDGE INVESTIGATION","冰箱调查","雪櫃調查","تحقيق الثلاجة","फ़्रिज जाँच"],
+  ["Hungry or bored? Let's catch the culprit.","饿了还是无聊？来抓出真凶。","肚餓定口痕？捉個真兇出嚟。","جائع أم ملل؟ لنقبض على الجاني.","भूख या बोरियत? अपराधी पकड़ते हैं।"],
+  ["OPEN TOOL","打开工具","打開工具","فتح الأداة","उपकरण खोलें"],
+  ["OPEN CASE","打开案件","開案","فتح القضية","मामला खोलें"],
+  ["INVESTIGATE","调查","調查","تحقيق","जाँच करें"],
+  ["START","开始","開始","ابدأ","शुरू करें"],
+  ["VIEW","查看","睇吓","عرض","देखें"],
+  ["One small mission. Right now.","一个小任务。现在。","一個小任務。即刻。","مهمة صغيرة واحدة. الآن.","एक छोटा मिशन। अभी।"]
+  ,["Your alibi looks suspicious.","你的不在场证明很可疑。","你個不在場證明好可疑。","حجتك تبدو مريبة.","आपकी सफ़ाई संदिग्ध लगती है।"]
+  ,["Compare it before you inhale it.","吞下去之前先比较。","鯨吞之前先比較。","قارنه قبل أن تلتهمه.","निगलने से पहले तुलना करें।"]
+  ,["MOVE, DRAMA LATER","先动，戏后演","郁先，戲後做","تحرك، والدراما لاحقاً","पहले हिलें, ड्रामा बाद में"]
+  ,["A tiny mission. No opera required.","一个小任务，不用演歌剧。","一個小任務，唔使做大龍鳳。","مهمة صغيرة. لا حاجة للأوبرا.","छोटा मिशन। ओपेरा की ज़रूरत नहीं।"]
+  ,["HABIT AUTOPSY","习惯剖析","習慣驗屍","تشريح العادة","आदत की जाँच"]
+  ,["Find where the routine died.","找出日常规律死在哪里。","搵出個習慣死咗喺邊。","اكتشف أين مات الروتين.","पता करें दिनचर्या कहाँ मरी।"]
+  ,["Receipts, not excuses.","要证据，不要借口。","要單據，唔要藉口。","أدلة، لا أعذار.","सबूत, बहाने नहीं।"]
+  ,["SEE PROOF","查看证据","睇證據","عرض الدليل","सबूत देखें"]
+  ,["SHOW THE RECEIPTS","亮出证据","拎單據出嚟","أظهر الأدلة","सबूत दिखाएँ"]
+  ,["See what actually moved.","看看实际有什么进展。","睇吓實際有咩郁過。","شاهد ما تحرك فعلاً.","देखें सच में क्या बदला।"]
+);
+
+entries.push(
+  ["sarcastic", "轻讽", "輕諷", "ساخر", "हल्का व्यंग्य"],
+  ["savage", "毒舌", "毒舌", "لاذع", "तीखा"],
+  ["unhinged", "失控", "失控", "مجنون", "बेकाबू"],
+  ["regular", "日间常规", "正常日更", "نهاري منتظم", "नियमित"],
+  ["night", "夜班", "夜更", "مناوبة ليلية", "रात की शिफ्ट"],
+  ["rotating", "轮班", "輪更", "مناوبات متغيرة", "बदलती शिफ्ट"],
+  ["irregular", "作息不规律", "作息不定", "غير منتظم", "अनियमित"],
+  ["{{roast}} mode", "{{roast}}模式", "{{roast}}模式", "وضع {{roast}}", "{{roast}} मोड"],
+  ["{{roast}} mode · Preview", "{{roast}}模式 · 预览", "{{roast}}模式 · 預覽", "وضع {{roast}} · معاينة", "{{roast}} मोड · पूर्वावलोकन"],
+  ["{{n}} related mission records: {{done}} completed and {{skipped}} skipped.", "{{n}} 条相关任务记录：{{done}} 条已完成，{{skipped}} 条已跳过。", "{{n}} 條相關任務記錄：{{done}} 條已完成，{{skipped}} 條已跳過。", "{{n}} سجلات مهام ذات صلة: {{done}} مكتملة و{{skipped}} متخطاة.", "{{n}} संबंधित मिशन रिकॉर्ड: {{done}} पूरे और {{skipped}} छोड़े गए।"],
+  ["{{incident}}; barrier selected: {{barrier}}.", "{{incident}}；所选障碍：{{barrier}}。", "{{incident}}；所揀障礙：{{barrier}}。", "{{incident}}؛ العائق المختار: {{barrier}}.", "{{incident}}; चुनी गई बाधा: {{barrier}}।"],
+  ["Move it to a time that fits your {{schedule}} schedule.", "把它挪到适合你“{{schedule}}”作息的时间。", "將佢搬去啱你「{{schedule}}」作息嘅時間。", "انقلها إلى وقت يناسب جدولك ({{schedule}}).", "इसे ऐसे समय पर ले जाएँ जो आपकी ({{schedule}}) दिनचर्या में फिट बैठे।"],
+  ["Reduce the next action to two minutes.", "把下一步缩减到两分钟。", "將下一步縮到兩分鐘。", "اجعل الخطوة التالية دقيقتين فقط.", "अगला कदम घटाकर दो मिनट का करें।"],
+  ["Attach a tiny version to something you already do.", "把迷你版绑在你已经在做的事上。", "將迷你版掛喺你已經做緊嘅嘢度。", "اربط نسخة صغيرة بشيء تفعله أصلاً.", "इसका छोटा रूप किसी ऐसी चीज़ से जोड़ें जो आप पहले से करते हैं।"],
+  ["Cause of death", "死因", "死因", "سبب الوفاة", "मौत का कारण"],
+  ["Forgot", "忘记了", "唔記得咗", "نسيت", "भूल गया"],
+  ["I forget", "我会忘记", "我會唔記得", "أنسى", "मैं भूल जाता/जाती हूँ"],
+  ["Something broke.","出错了。","出咗事。","حدث خلل ما.","कुछ गड़बड़ हो गई।"],
+  ["Reload chat","重新加载聊天","重新載入聊天","أعد تحميل المحادثة","चैट फिर से लोड करें"],
+  ["ACTUAL RECORDS. NO IMAGINARY VICTORIES.", "真实记录。没有想象中的胜利。", "真實記錄。冇想像出嚟嘅勝利。", "سجلات حقيقية. لا انتصارات متخيلة.", "असली रिकॉर्ड। काल्पनिक जीत नहीं।"],
+  ["Just one bite","就一口","食一啖啫","مجرد لقمة واحدة","बस एक निवाला"],
+  ["I'll stop tomorrow","我明天就停","我聽日就停","سأتوقف غداً","कल रोक दूँगा/दूँगी"],
+  ["I deserve another snack","我值得再吃一份零食","我值得再食多份零食","أستحق وجبة خفيفة أخرى","मैं एक और नाश्ते का हकदार/हकदार हूँ"],
+  ["I'm bored","我很无聊","我好悶","أشعر بالملل","मैं बोर हो रहा/रही हूँ"],
+  ["It's only a small supper","只是一份小宵夜","只係一份小宵夜啫","إنها وجبة ليلية صغيرة فقط","यह बस छोटा सा देर रात का खाना है"],
+  ["Snack cravings","零食冲动","零食口痕","اشتهاء الوجبات الخفيفة","नाश्ते की लालसा"],
+  ["Late-night boredom","深夜无聊","夜晚口痕兼悶","ملل آخر الليل","देर रात की बोरियत"],
+  ["Delivery-app checking","反复查看外卖应用","成日開外賣 App","تفقد تطبيق التوصيل","डिलीवरी ऐप देखते रहना"],
+  ["Stress snacking","压力性吃零食","壓力食零食","الأكل الخفيف بسبب التوتر","तनाव में नाश्ता"],
+  ["Sleep disruption","睡眠被打乱","瞓覺被打亂","اضطراب النوم","नींद में बाधा"],
+  ["I'm stressed","我压力很大","我好大壓力","أنا متوتر","मैं तनाव में हूँ"],
+  ["I did the action","我完成了行动","我做咗個行動","نفذت الإجراء","मैंने कार्रवाई पूरी की"],
+  ["VERIFIED CRAVING RECORD","已验证的食欲记录","已核實口痕紀錄","سجل اشتهاء موثق","सत्यापित लालसा रिकॉर्ड"],
+  ["THE FRIDGE FILE IS STILL OPEN.","冰箱档案仍未结案。","雪櫃檔案仲未閂。","ملف الثلاجة ما زال مفتوحاً.","फ़्रिज की फ़ाइल अभी खुली है।"],
+  ["Continue the investigation from your saved report. No invented cravings, just your own receipts.","从已保存的报告继续调查。没有虚构的食欲，只有你自己的记录。","由你儲低嘅報告繼續查。冇作出嚟嘅口痕，得你自己啲單據。","تابع التحقيق من تقريرك المحفوظ. لا اشتهاء مختلق، فقط سجلاتك.","अपनी सहेजी रिपोर्ट से जाँच जारी रखें। कोई बनाई हुई लालसा नहीं, सिर्फ़ आपके रिकॉर्ड।"],
+  ["CRAVING EVIDENCE","食欲冲动证据","口痕證據","أدلة الاشتهاء","लालसा के सबूत"],
+  ["Self-reported records only. A chosen action is not counted as a successful outcome unless you confirmed it.","仅显示自报记录。除非你确认，否则所选行动不会算作成功结果。","只顯示你自己報告嘅紀錄。未確認完成，揀咗行動都唔算成功。","سجلات مبلغ عنها ذاتياً فقط. لا نحسب الإجراء المختار نتيجة ناجحة إلا بعد تأكيدك.","केवल स्वयं बताए रिकॉर्ड। चुनी कार्रवाई को सफल परिणाम तभी माना जाएगा जब आप पुष्टि करें।"],
+  ["Reported episodes","报告次数","報告次數","الحالات المبلغ عنها","रिपोर्ट की गई घटनाएँ"],
+  ["Actions chosen","已选行动","已揀行動","الإجراءات المختارة","चुनी गई कार्रवाइयाँ"],
+  ["Confirmed outcomes","已确认结果","已確認結果","النتائج المؤكدة","पुष्ट परिणाम"],
+  ["REPORTED CRAVING TRIGGERS","报告的食欲诱因","報告過嘅口痕誘因","محفزات الاشتهاء المبلغ عنها","रिपोर्ट किए लालसा ट्रिगर"],
+  ["Close the delivery app or kitchen, then do one non-food activity for two minutes.","关闭外卖应用或离开厨房，然后做两分钟非饮食活动。","閂外賣 App 或者離開廚房，再做兩分鐘唔關食嘢事嘅活動。","أغلق تطبيق التوصيل أو المطبخ، ثم مارس نشاطاً غير غذائي لدقيقتين.","डिलीवरी ऐप या रसोई बंद करें, फिर दो मिनट कोई गैर-खाद्य गतिविधि करें।"],
+  ["DELIVERY APP DETOX","外卖应用戒断","外賣 App 戒毒","تنظيف تطبيق التوصيل","डिलीवरी ऐप डिटॉक्स"],
+  ["CRAVING ACTIONS","食欲冲动行动","口痕行動","إجراءات الاشتهاء","लालसा कार्रवाइयाँ"],
+  ["Verified local records only. Choosing an action and completing it are counted separately.","仅显示已验证的本地记录。选择行动和完成行动会分开计算。","只顯示已核實嘅本地紀錄。揀行動同完成行動會分開計。","سجلات محلية موثقة فقط. يُحسب اختيار الإجراء وإكماله بشكل منفصل.","केवल सत्यापित स्थानीय रिकॉर्ड। कार्रवाई चुनना और पूरा करना अलग गिने जाते हैं।"]
+);
+
 const localeIndex: Record<Locale, number> = { en:0, "zh-CN":1, "yue-Hant":2, "ar-AE":3, "hi-IN":4 };
 const catalogs = Object.fromEntries((Object.keys(localeIndex) as Locale[]).map((locale) => [locale, new Map(entries.map((entry) => [entry[0], entry[localeIndex[locale]]]))])) as Record<Locale, Map<string,string>>;
 const canonical = new Map(entries.flatMap((entry)=>entry.map((value)=>[value,entry[0]] as const)));
+
+const norm=(value:string)=>value.replace(/\s+/g," ").trim();
+const templates=entries.filter((entry)=>entry[0].includes("{{")).map((entry)=>{const names:string[]=[];const source=entry[0].split(/(\{\{\w+\}\})/).map((part)=>{const name=part.match(/^\{\{(\w+)\}\}$/)?.[1];if(name){names.push(name);return "(.+?)";}return part.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}).join("");return {entry,names,regex:new RegExp(`^${source}$`)};});
 
 const originals = new WeakMap<Text,string>();
 const originalAttributes = new WeakMap<Element,Map<string,string>>();
 let observer: MutationObserver | null = null;
 
-const translatePattern = (value:string, locale:Locale) => {
+const translatePattern = (value:string, locale:Locale):string => {
   if(locale==="en")return value;
   const dictionary=catalogs[locale];
   const exact=dictionary.get(value);
   if(exact)return exact;
+  for(const {entry,names,regex} of templates){const match=value.match(regex);if(match)return entry[localeIndex[locale]].replace(/\{\{(\w+)\}\}/g,(_,name:string)=>translatePattern(match[names.indexOf(name)+1],locale));}
   const minutes=value.match(/^(\d+)\s*(?:min|minutes|m)$/i);
   if(minutes){const unit={"zh-CN":"分钟","yue-Hant":"分鐘","ar-AE":"دقيقة","hi-IN":"मिनट"}[locale];return `${minutes[1]} ${unit}`;}
   const lastDays=value.match(/^Last (\d+) days$/);
@@ -628,8 +716,8 @@ const translatePattern = (value:string, locale:Locale) => {
   return value;
 };
 
-const isPattern=(value:string)=>/^(\d+)\s*(?:min|minutes|m)$/i.test(value)||/^Last (\d+) days$/.test(value)||/^Level (\d+)$/i.test(value);
-const localizeText=(node:Text,locale:Locale)=>{const parent=node.parentElement;if(!parent||parent.closest("[data-i18n-skip]"))return;const current=node.data;const currentTrimmed=current.trim();if(!currentTrimmed)return;const known=originals.get(node);const source=known??canonical.get(currentTrimmed)??currentTrimmed;if(!known&&!catalogs.en.has(source)&&!isPattern(source))return;originals.set(node,source);const translated=translatePattern(source,locale);const start=current.match(/^\s*/)?.[0]??"";const end=current.match(/\s*$/)?.[0]??"";const next=`${start}${translated}${end}`;if(node.data!==next)node.data=next;};
+const isPattern=(value:string)=>/^(\d+)\s*(?:min|minutes|m)$/i.test(value)||/^Last (\d+) days$/.test(value)||/^Level (\d+)$/i.test(value)||templates.some(({regex})=>regex.test(value));
+const localizeText=(node:Text,locale:Locale)=>{const parent=node.parentElement;if(!parent||parent.closest("[data-i18n-skip]"))return;const current=node.data;const currentTrimmed=current.trim();if(!currentTrimmed)return;const known=originals.get(node);const raw=known??currentTrimmed;const source=canonical.get(norm(raw))??norm(raw);if(!known&&!catalogs.en.has(source)&&!isPattern(source))return;originals.set(node,raw);const translated=locale==="en"?raw:translatePattern(source,locale);const start=current.match(/^\s*/)?.[0]??"";const end=current.match(/\s*$/)?.[0]??"";const next=`${start}${translated}${end}`;if(node.data!==next)node.data=next;};
 const attributes=["aria-label","placeholder","title"] as const;
 const localizeElement=(element:Element,locale:Locale)=>{if(element.closest("[data-i18n-skip]"))return;const saved=originalAttributes.get(element)??new Map<string,string>();attributes.forEach((name)=>{const current=element.getAttribute(name);if(current===null)return;const source=saved.get(name)??canonical.get(current)??current;if(!catalogs.en.has(source)&&!isPattern(source))return;saved.set(name,source);const next=translatePattern(source,locale);if(current!==next)element.setAttribute(name,next);});originalAttributes.set(element,saved);};
 const localizeRoot=(root:Node,locale:Locale)=>{if(root.nodeType===Node.TEXT_NODE)localizeText(root as Text,locale);if(root.nodeType===Node.ELEMENT_NODE)localizeElement(root as Element,locale);const walker=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);let node=walker.nextNode();while(node){if(node.nodeType===Node.TEXT_NODE)localizeText(node as Text,locale);else localizeElement(node as Element,locale);node=walker.nextNode();}};
