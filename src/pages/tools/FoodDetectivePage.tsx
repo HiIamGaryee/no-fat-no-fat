@@ -3,6 +3,7 @@ import { Bot, LoaderCircle, Save, Scale } from "lucide-react";
 import { motion } from "motion/react";
 import { useAppDataContext } from "@/components/app/AppDataContext";
 import { ToolLayout } from "@/components/tools/ToolLayout";
+import { Select } from "@/components/ui/select";
 import { sendChatMessage, toChatProfile } from "@/lib/chat";
 import { createToolEvent } from "@/lib/tools/tool-events";
 
@@ -98,9 +99,7 @@ export const FoodDetectivePage = () => {
                 </label>
                 <label className="mt-4 block font-bold">
                   Comparison basis
-                  <select className="brand-input" value={food.basis} onChange={(event) => update(side, "basis", event.target.value)}>
-                    {["per 100 g/ml", "per declared serving"].map((basis) => <option key={basis} value={basis}>{basis}</option>)}
-                  </select>
+                  <Select value={food.basis} onChange={(basis) => update(side, "basis", basis)} options={["per 100 g/ml", "per declared serving"].map((basis) => ({ value: basis, label: basis }))} />
                 </label>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {nutrients.map(({ key, label, unit }) => (

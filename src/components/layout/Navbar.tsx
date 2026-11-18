@@ -3,10 +3,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BrandLogo } from "./BrandLogo";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { hasCompletedProfile } from "@/lib/storage";
 import { useI18n } from "@/i18n/config";
 import type { Locale } from "@/types/profile";
+
+const localeOptions:{value:Locale;label:string}[]=[{value:"en",label:"EN"},{value:"zh-CN",label:"简中"},{value:"yue-Hant",label:"廣東話"},{value:"ar-AE",label:"العربية"},{value:"hi-IN",label:"हिन्दी"}];
 
 const links = [
   { key: "navFeatures", href: "#features" }, { key: "navHow", href: "#how-it-works" },
@@ -24,7 +27,7 @@ export const Navbar = () => {
       <BrandLogo className="text-sm sm:text-base" />
       <div className="hidden items-center gap-1 lg:flex">{links.map((link) => <a key={link.href} href={link.href} className="rounded-full px-3 py-3 text-xs font-bold uppercase hover:bg-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue">{t(link.key)}</a>)}</div>
       <div className="flex items-center gap-2">
-        <label className="sr-only" htmlFor="global-locale">Language</label><select id="global-locale" value={locale} onChange={(event)=>setLocale(event.target.value as Locale)} className="hidden min-h-11 bg-transparent px-2 text-xs font-bold uppercase sm:block"><option value="en">EN</option><option value="zh-CN">简中</option><option value="yue-Hant">廣東話</option><option value="ar-AE">العربية</option><option value="hi-IN">हिन्दी</option></select>
+        <span data-i18n-skip className="hidden sm:block"><Select id="global-locale" label="Language" compact value={locale} onChange={setLocale} options={localeOptions}/></span>
         <Button asChild className="min-h-10 rounded-full border-2 px-4 text-xs shadow-none"><Link to={tryPath}>{t("tryNow")}</Link></Button>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild><Button size="icon" variant="ghost" className="rounded-full shadow-none lg:hidden" aria-label="Open menu"><Menu /></Button></SheetTrigger>
