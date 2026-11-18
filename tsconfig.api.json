@@ -12,6 +12,8 @@
   "include": [
     "api/**/*.ts",
     "netlify/functions/**/*.ts",
-    "src/lib/craving-policy.ts"
+    "src/lib/craving-policy.ts",
+    "src/lib/coach-state.ts",
+    "src/lib/coach-personality.ts"
   ]
 }

@@ -5,7 +5,8 @@ import { useAppDataContext } from "@/components/app/AppDataContext";
 import { ToolLayout } from "@/components/tools/ToolLayout";
 import { createToolEvent } from "@/lib/tools/tool-events";
 import { useI18n } from "@/i18n/config";
-import { deleteToolEvent, loadToolEvents } from "@/lib/storage";
+import { deleteToolEvent, loadCoachState, loadToolEvents } from "@/lib/storage";
+import { toolShouldBlockSnack, type CoachState } from "@/lib/coach-state";
 import type { LocalProfile } from "@/types/profile";
 import { evaluateCravingPolicy } from "@/lib/craving-policy";
 
@@ -86,6 +87,7 @@ export const decideMidnightFood = (
   lastMeal: string,
   profile: Pick<LocalProfile, "schedule" | "sleepTime" | "wakeTime">,
   now = new Date(),
+  coach?: CoachState,
 ): Decision => {
   const current = now.getHours() * 60 + now.getMinutes();
   const bedtime = inWindow(
@@ -102,15 +104,16 @@ export const decideMidnightFood = (
   );
   if (policy.intent === "night_shift")
     return decisions["Working a night shift"];
-  if (policy.approach === "bedtime_shutdown")
-    return {
-      finding: "You ate recently. The fridge is filing a duplicate request.",
-      action:
-        "Skip the unnecessary snack, put the phone away, and go to sleep.",
-      alternative:
-        "If clear physical hunger appears, reassess it instead of guessing.",
-      why: "Bedtime boredom does not need catering.",
-    };
+  const ateRecently: Decision = {
+    finding: "You ate recently. The fridge is filing a duplicate request.",
+    action: "Skip the unnecessary snack, put the phone away, and go to sleep.",
+    alternative:
+      "If clear physical hunger appears, reassess it instead of guessing.",
+    why: "Bedtime boredom does not need catering.",
+  };
+  if (policy.approach === "bedtime_shutdown") return ateRecently;
+  if (toolShouldBlockSnack(coach, situation))
+    return coach?.bedtime ? ateRecently : decisions.Bored;
   return decisions[situation] ?? decisions["Not sure"];
 };
 export const MidnightFoodPage = () => {
@@ -126,7 +129,9 @@ export const MidnightFoodPage = () => {
   );
   const investigate = () => {
     if (!situation) return;
-    setResult(decideMidnightFood(situation, lastMeal, profile));
+    setResult(
+      decideMidnightFood(situation, lastMeal, profile, new Date(), loadCoachState()),
+    );
   };
   const save = () => {
     if (!result) return;

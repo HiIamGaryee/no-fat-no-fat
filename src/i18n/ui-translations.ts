@@ -690,6 +690,12 @@ entries.push(
   ["Verified local records only. Choosing an action and completing it are counted separately.","仅显示已验证的本地记录。选择行动和完成行动会分开计算。","只顯示已核實嘅本地紀錄。揀行動同完成行動會分開計。","سجلات محلية موثقة فقط. يُحسب اختيار الإجراء وإكماله بشكل منفصل.","केवल सत्यापित स्थानीय रिकॉर्ड। कार्रवाई चुनना और पूरा करना अलग गिने जाते हैं।"]
 );
 
+entries.push(
+  ["Impressive plan. Truly. Shame it's allergic to being done.", "计划真不错，真的。可惜它对“被执行”过敏。", "個計劃真係好叻，真㗎。可惜佢對「做出嚟」敏感。", "خطة مبهرة، فعلاً. للأسف عندها حساسية من التنفيذ.", "शानदार योजना, सच में। अफ़सोस, इसे पूरा होने से एलर्जी है।"],
+  ["Your fitness plan filed for unemployment. Even your excuses work harder.", "你的健身计划已申请失业救济，连你的借口都比它勤快。", "你個健身計劃已經申請失業援助，連你啲藉口都比佢勤力。", "خطتك الرياضية قدّمت طلب إعانة بطالة، حتى أعذارك تعمل أكثر منها.", "आपके फ़िटनेस प्लान ने बेरोज़गारी भत्ते के लिए आवेदन कर दिया, आपके बहाने भी उससे ज़्यादा मेहनत करते हैं।"],
+  ["Emergency committee assembled. Your workout shoes were declared furniture and are suing the couch for custody.", "紧急委员会已集合。你的运动鞋被认定为家具，正在起诉沙发争夺监护权。", "緊急委員會已經開會。你對運動鞋被判定係傢俬，而家告緊梳化爭撫養權。", "اجتمعت لجنة الطوارئ. حذاؤك الرياضي صُنّف أثاثاً ويقاضي الأريكة على الحضانة.", "आपातकालीन समिति बैठ चुकी है। आपके वर्कआउट जूते फ़र्नीचर घोषित हो गए हैं और सोफ़े पर कस्टडी का मुक़दमा कर रहे हैं।"]
+);
+
 const localeIndex: Record<Locale, number> = { en:0, "zh-CN":1, "yue-Hant":2, "ar-AE":3, "hi-IN":4 };
 const catalogs = Object.fromEntries((Object.keys(localeIndex) as Locale[]).map((locale) => [locale, new Map(entries.map((entry) => [entry[0], entry[localeIndex[locale]]]))])) as Record<Locale, Map<string,string>>;
 const canonical = new Map(entries.flatMap((entry)=>entry.map((value)=>[value,entry[0]] as const)));

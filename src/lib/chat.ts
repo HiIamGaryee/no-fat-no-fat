@@ -5,7 +5,9 @@ import type {
   ChatProfileContext,
 } from "@/types/chat";
 import type { LocalProfile } from "@/types/profile";
+import { sanitizeCoachState } from "@/lib/coach-state";
 import {
+  loadCoachState,
   loadLocale,
   loadMissionStore,
   loadSettings,
@@ -104,7 +106,7 @@ export const sendChatMessage = async (
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(request),
+      body: JSON.stringify({ ...request, source: request.source ?? "tool", coach: request.coach ?? loadCoachState() }),
       signal: controller.signal,
     });
     const body = (await response.json().catch(() => null)) as
@@ -133,7 +135,7 @@ export const sendChatMessage = async (
       (!body.action.context || typeof body.action.context === "string")
         ? { id: body.action.id, context: body.action.context?.slice(0, 300) }
         : undefined;
-    return { ...body, bubbles, quickReplies, action };
+    return { ...body, bubbles, quickReplies, action, coach: sanitizeCoachState(body.coach) };
   } finally {
     window.clearTimeout(timer);
     signal?.removeEventListener("abort", abort);

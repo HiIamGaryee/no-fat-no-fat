@@ -2,6 +2,7 @@ import { locales, type LocalProfile, type OnboardingDraft } from "@/types/profil
 import type { AppSettings, Mission, MissionStore, ProgressStore } from "@/types/app";
 import { generateMissions, localDayForProfile } from "@/lib/missions";
 import type { ChatExchange, ChatStore } from "@/types/chat";
+import { sanitizeCoachState } from "@/lib/coach-state";
 import { toolActionIds, type ToolEvent, type ToolEventStore } from "@/types/tools";
 
 export const STORAGE_KEYS = { profile: "nfnf:profile:v1", onboarding: "nfnf:onboarding:v1", preferences: "nfnf:preferences:v1", missions:"nfnf:missions:v1", progress:"nfnf:progress:v1", settings:"nfnf:settings:v1", chat:"nfnf:chat:v1", toolEvents:"nfnf:tool-events:v1" } as const;
@@ -61,6 +62,7 @@ export const resetProgress=()=>[STORAGE_KEYS.missions,STORAGE_KEYS.progress,STOR
 export const deleteAllAppData=()=>Object.values(STORAGE_KEYS).map(safeRemove).every(Boolean);
 const validExchange=(value:unknown):value is ChatExchange=>isRecord(value)&&typeof value.id==="string"&&typeof value.user==="string"&&typeof value.assistant==="string"&&(value.bubbles===undefined||(Array.isArray(value.bubbles)&&value.bubbles.every(item=>typeof item==="string")))&&(value.quickReplies===undefined||(Array.isArray(value.quickReplies)&&value.quickReplies.every(item=>typeof item==="string")))&&Array.isArray(value.modelSteps)&&typeof value.createdAt==="string"&&(value.action===undefined||(isRecord(value.action)&&toolActionIds.includes(value.action.id as never)&&(value.action.context===undefined||typeof value.action.context==="string")));
 export const loadChat=():ChatStore=>{const value=safeRead(STORAGE_KEYS.chat);return isRecord(value)&&value.version===1&&Array.isArray(value.exchanges)&&value.exchanges.every(validExchange)?value as unknown as ChatStore:{version:1,exchanges:[]};};
+export const loadCoachState=()=>sanitizeCoachState(loadChat().coach);
 export const saveChat=(chat:ChatStore)=>safeWrite(STORAGE_KEYS.chat,{...chat,exchanges:chat.exchanges.slice(-20)});
 export const clearChat=()=>{try{window.localStorage.removeItem(STORAGE_KEYS.chat);return true;}catch{return false;}};
 const toolEventTypes=["food_decision_recorded","craving_action_completed","excuse_case_created","excuse_action_completed","food_comparison_saved","movement_mission_completed","habit_investigation_completed","recovery_action_created","evidence_reviewed"];

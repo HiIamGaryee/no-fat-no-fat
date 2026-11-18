@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useAppDataContext } from "@/components/app/AppDataContext";
 import { buildInteractionHistory, formatAssistantBubbles, sendChatMessage, toChatProfile } from "@/lib/chat";
-import { clearChat, loadChat, saveChat } from "@/lib/storage";
+import { clearChat, loadChat, loadCoachState, saveChat } from "@/lib/storage";
 import { toolActionUrl } from "@/lib/tools/tool-registry";
 import type { ChatExchange } from "@/types/chat";
 import { useI18n } from "@/i18n/config";
@@ -72,13 +72,13 @@ export const ChatPage = () => {
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const result = await sendChatMessage({ message, history:buildInteractionHistory(exchanges), profile:toChatProfile(profile) }, controller.signal);
+      const result = await sendChatMessage({ message, history:buildInteractionHistory(exchanges), profile:toChatProfile(profile), source:"chat", coach:loadCoachState() }, controller.signal);
       const exchange:ChatExchange = { id:globalThis.crypto?.randomUUID?.() ?? String(Date.now()), user:message, assistant:result.text, bubbles:result.bubbles, quickReplies:result.quickReplies, modelSteps:result.steps, createdAt:new Date().toISOString(), action:result.action };
       const next = [...exchanges, exchange];
       setRevealingId(exchange.id);
       setExchanges(next);
       setPendingUser("");
-      saveChat({ version:1, exchanges:next });
+      saveChat({ version:1, exchanges:next, coach:result.coach });
     } catch (reason) {
       console.error("[chat] request failed", reason);
       if (reason instanceof Error && reason.name !== "AbortError") {

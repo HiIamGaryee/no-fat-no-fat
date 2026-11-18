@@ -24,11 +24,10 @@ const goalLabels: Record<string, string> = {
   sleep: "Sleep consistency",
 };
 const coachCopy = {
-  sarcastic:
-    "Your plans look amazing. Have you considered actually doing them?",
-  savage: "Your fitness plan filed for unemployment. Nobody's been using it.",
+  sarcastic: "Impressive plan. Truly. Shame it's allergic to being done.",
+  savage: "Your fitness plan filed for unemployment. Even your excuses work harder.",
   unhinged:
-    "Emergency committee assembled. Your workout shoes may now be furniture.",
+    "Emergency committee assembled. Your workout shoes were declared furniture and are suing the couch for custody.",
 };
 
 export const DashboardPage = () => {
