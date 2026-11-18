@@ -21,4 +21,20 @@ describe("multilingual UI catalog", () => {
     expect(translateUi("hi-IN","Delete this browser's UNFIT AI conversation history?")).toContain("UNFIT AI");
     expect(translateUi("hi-IN","Delete this browser's UNFIT AI conversation history?")).not.toMatch(/^Delete/);
   });
+
+  it("translates entries pushed late and placeholder templates in every locale", () => {
+    expect(translateUi("ar-AE","FRIDGE INVESTIGATION")).toBe("تحقيق الثلاجة");
+    expect(translateUi("zh-CN","savage")).toBe("毒舌");
+    expect(translateUi("zh-CN","3 related mission records: 1 completed and 2 skipped.")).toBe("3 条相关任务记录：1 条已完成，2 条已跳过。");
+    expect(translateUi("yue-Hant","Forgot; barrier selected: I forget.")).toBe("唔記得咗；所揀障礙：我會唔記得。");
+    expect(translateUi("hi-IN","savage mode")).toBe("तीखा मोड");
+  });
+
+  it("matches multi-line titles and restores the original text in English", () => {
+    document.body.innerHTML="<h2>THE RECEIPTS\nDON'T LIE.</h2>";
+    localizeDocument("zh-CN");
+    expect(document.querySelector("h2")?.textContent).toBe("证据不会说谎。");
+    localizeDocument("en");
+    expect(document.querySelector("h2")?.textContent).toBe("THE RECEIPTS\nDON'T LIE.");
+  });
 });
