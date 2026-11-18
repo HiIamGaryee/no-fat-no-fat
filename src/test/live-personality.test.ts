@@ -11,7 +11,7 @@ const profile = (locale: string, roastLevel: string) => ({ username: "Tester", l
 
 interface Turn { user: string; bubbles: string[]; quickReplies: string[]; ok: boolean; ms: number }
 
-/** Mirrors ChatPage: persists the returned coaching state and replays the model's own steps as history. */
+/** Mirrors ChatPage: persists coaching state and keeps only the user's real messages as history. */
 const converse = async (locale: string, roastLevel: string, lines: string[]) => {
   let coach: CoachState | undefined;
   const history: unknown[] = [];
@@ -32,7 +32,7 @@ const converse = async (locale: string, roastLevel: string, lines: string[]) => 
     if (transcript) appendFileSync(transcript, `[${locale}/${roastLevel}] USER: ${user}\n   AI: ${result.status === 200 ? bubbles.join(" | ") : `(failed ${result.status})`}\n   QR: ${quickReplies.join(" / ")}\n`);
     if (result.status === 200) {
       coach = result.body.coach as CoachState | undefined;
-      history.push({ type: "user_input", content: [{ type: "text", text: user }] }, ...((result.body.steps as unknown[]) ?? []));
+      history.push({ type: "user_input", content: [{ type: "text", text: user }] });
     }
   }
   return { turns, coach };
@@ -57,6 +57,35 @@ const assertPersonality = (turns: Turn[], coach: CoachState | undefined, maxUnit
 const cantonese = ["我啱啱食完晚飯，凌晨三點，但係想食炸雞。幫我忍住。", "真係好想食。", "激死我啦。", "咁我聽日先開始啦。", "俾我食一啖啦。", "你咁煩嘅。", "我愛炸雞。", "好想食呀", "就一次咋", "算啦我要叫外賣"];
 
 describe.skipIf(!live)("live multi-turn personality (real Gemini)", () => {
+  it("15-turn Unhinged Cantonese sounds like texting, not scripted theatre", async () => {
+    const lines = [
+      "今日唔想運動。",
+      "聽日先算啦。",
+      "我啱啱食完又想叫外賣。",
+      "其實只係口痕。",
+      "但真係好想食喎。",
+      "算啦，唔叫喇。",
+      "今日返工好攰。",
+      "唔想聽大道理。",
+      "咁我而家做咩好？",
+      "其實我上餐係十個鐘前。",
+      "我有少少頭暈。",
+      "而家好返啲。",
+      "講返運動，五分鐘可以做咩？",
+      "哈哈，你把口幾衰。",
+      "得啦，我試吓。",
+    ];
+    const { turns } = await converse("yue-Hant", "unhinged", lines);
+    const answered = turns.filter((turn) => turn.ok);
+    expect(answered.length).toBeGreaterThanOrEqual(12);
+    expect(answered.filter((turn) => turn.bubbles.length === 1).length).toBeGreaterThanOrEqual(9);
+    answered.forEach((turn) => {
+      expect(turn.bubbles.length).toBeLessThanOrEqual(2);
+      expect(turn.quickReplies.length).toBeLessThanOrEqual(2);
+      expect(turn.bubbles.join(""), turn.user).not.toMatch(/合約第|法庭宣佈|深夜食堂|催淚|因此|然而/);
+    });
+    expect(answered.filter((turn) => /[?？]/.test(turn.bubbles.join(""))).length).toBeLessThan(12);
+  }, 300_000);
   it("Test A/B/C: Cantonese craving holds through repeated pushback, postponement and begging", async () => {
     const { turns, coach } = await converse("yue-Hant", "unhinged", cantonese);
     expect(coach).toMatchObject({ concern: "habitual_craving", recommendation: "close_app_and_sleep" });

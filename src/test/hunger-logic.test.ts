@@ -28,6 +28,7 @@ describe("midnight hunger decisions", () => {
       ["It's 3 AM, I just ate dinner and I'm bored.", "bedtime_craving"],
       ["I'm hungry at 3 AM.", "unknown_hunger"],
       ["I haven't eaten for 10 hours.", "genuine_hunger"],
+      ["其實我上餐係十個鐘前。", "genuine_hunger"],
       ["I'm on night shift.", "night_shift"],
       ["I already had supper but want more snacks.", "recent_meal_craving"],
       ["I'm dizzy and haven't eaten.", "safety"],

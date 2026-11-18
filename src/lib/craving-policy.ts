@@ -105,20 +105,10 @@ export const evaluateCravingPolicy = (
       suggestedTool: "none",
       repeatedEvidenceCount: 0,
     };
-  if (!isCravingRelated(value))
-    return {
-      intent: "none",
-      certainty: "none",
-      approach: "unrelated",
-      allowFoodSuggestion: true,
-      allowRoast: true,
-      suggestedTool: "none",
-      repeatedEvidenceCount: 0,
-    };
   const prolonged = matches(value, [
     /(?:haven't|have not|didn't|did not) (?:eat|eaten).*(?:[6-9]|1\d)\s*(?:hours?|hrs?)/,
     /(?:[6-9]|1\d)\s*(?:hours?|hrs?).*(?:haven't|without|no food)/,
-    /好幾個鐘冇食|几个小时没吃|幾個鐘冇食|لم آكل منذ|ما أكلت منذ|घंटे से नहीं खाया|घंटों से नहीं खाया/,
+    /好幾個鐘冇食|几个小时没吃|幾個鐘冇食|上餐.*(?:[六七八九十]|\d+)個鐘前|上顿.*(?:[六七八九十]|\d+)个小时前|لم آكل منذ|ما أكلت منذ|घंटे से नहीं खाया|घंटों से नहीं खाया/,
   ]);
   if (prolonged)
     return {
@@ -127,6 +117,16 @@ export const evaluateCravingPolicy = (
       approach: "respect_hunger",
       allowFoodSuggestion: true,
       allowRoast: false,
+      suggestedTool: "none",
+      repeatedEvidenceCount: 0,
+    };
+  if (!isCravingRelated(value))
+    return {
+      intent: "none",
+      certainty: "none",
+      approach: "unrelated",
+      allowFoodSuggestion: true,
+      allowRoast: true,
       suggestedTool: "none",
       repeatedEvidenceCount: 0,
     };
@@ -186,7 +186,7 @@ export const cravingPolicyDirective = (policy: CravingPolicyResult) =>
   ({
     none: "This is unrelated to cravings. Do not inject food or craving advice.",
     safety:
-      "SAFETY MODE: no roast. Address symptoms directly and recommend appropriate immediate care. Do not run a craving test.",
+      "SAFETY MODE: no roast. Address symptoms directly and recommend appropriate immediate care. If missed meals or prolonged lack of food is also reported, never tell the user to ignore food; suggest sensible immediate intake when safe and medical help for severe or persistent symptoms. Do not run a craving test.",
     night_shift:
       "NIGHT SHIFT: treat this as a normal waking period. Never prescribe sleep because of clock time. Clarify hunger and respect normal meals.",
     genuine_hunger:

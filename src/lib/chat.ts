@@ -29,12 +29,12 @@ export const formatAssistantBubbles = (bubbles: unknown, text = "") => {
         .map(cleanBubble)
         .filter(Boolean)
     : [];
-  if (structured.length) return structured.slice(0, 4);
+  if (structured.length) return structured.slice(0, 2);
   const paragraphs = text
     .split(/\n\s*\n|\n+/)
     .map(cleanBubble)
     .filter(Boolean);
-  if (paragraphs.length > 1) return paragraphs.slice(0, 4);
+  if (paragraphs.length > 1) return paragraphs.slice(0, 2);
   const sentences = sentenceParts(text);
   if (sentences.length < 2) return [cleanBubble(text)].filter(Boolean);
   return sentences
@@ -49,7 +49,7 @@ export const formatAssistantBubbles = (bubbles: unknown, text = "") => {
       else chunks.push(sentence);
       return chunks;
     }, [])
-    .slice(0, 4);
+    .slice(0, 2);
 };
 
 export const toChatProfile = (profile: LocalProfile): ChatProfileContext => {
@@ -83,12 +83,10 @@ export const toChatProfile = (profile: LocalProfile): ChatProfileContext => {
   };
 };
 export const buildInteractionHistory = (exchanges: ChatExchange[]) =>
-  exchanges
-    .slice(-8)
-    .flatMap((exchange) => [
-      { type: "user_input", content: [{ type: "text", text: exchange.user }] },
-      ...exchange.modelSteps,
-    ]);
+  exchanges.slice(-8).map((exchange) => ({
+    type: "user_input",
+    content: [{ type: "text", text: exchange.user }],
+  }));
 export const sendChatMessage = async (
   request: ChatApiRequest,
   signal?: AbortSignal,
@@ -106,7 +104,11 @@ export const sendChatMessage = async (
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...request, source: request.source ?? "tool", coach: request.coach ?? loadCoachState() }),
+      body: JSON.stringify({
+        ...request,
+        source: request.source ?? "tool",
+        coach: request.coach ?? loadCoachState(),
+      }),
       signal: controller.signal,
     });
     const body = (await response.json().catch(() => null)) as
@@ -126,7 +128,7 @@ export const sendChatMessage = async (
               typeof item === "string" && item.trim().length > 0,
           )
           .map((item) => item.trim().slice(0, 80))
-          .slice(0, 3)
+          .slice(0, 2)
       : undefined;
     const action =
       body.action &&
@@ -135,7 +137,13 @@ export const sendChatMessage = async (
       (!body.action.context || typeof body.action.context === "string")
         ? { id: body.action.id, context: body.action.context?.slice(0, 300) }
         : undefined;
-    return { ...body, bubbles, quickReplies, action, coach: sanitizeCoachState(body.coach) };
+    return {
+      ...body,
+      bubbles,
+      quickReplies,
+      action,
+      coach: sanitizeCoachState(body.coach),
+    };
   } finally {
     window.clearTimeout(timer);
     signal?.removeEventListener("abort", abort);
