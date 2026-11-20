@@ -79,7 +79,9 @@ export const toChatProfile = (profile: LocalProfile): ChatProfileContext => {
     activityPreference: profile.activityPreference,
     preferredMissionMinutes: profile.preferredMissionMinutes,
     roastLevel: profile.roastLevel,
-    recentActivity: [...missions, ...events].slice(-8),
+    recentActivity: [...missions, ...events]
+      .slice(-8)
+      .map((item) => item.slice(0, 160)),
   };
 };
 export const buildInteractionHistory = (exchanges: ChatExchange[]) =>

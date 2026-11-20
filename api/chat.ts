@@ -390,11 +390,11 @@ export default async function handler(
     let model = configured;
     let interaction;
     try {
-      interaction = await call(model, 9000);
+      interaction = await call(model, source === "tool" ? 14000 : 9000);
     } catch (error) {
       console.error("[chat] Gemini call failed", model, error);
       model = "gemini-3.1-flash-lite";
-      interaction = await call(model, 7000);
+      interaction = await call(model, source === "tool" ? 10000 : 7000);
     }
     let output = parseOutput(interaction.output_text);
     const found = problems(output, interaction.output_text);
@@ -441,10 +441,11 @@ export default async function handler(
         (state.lastUserKind === "insistence" && state.insistence >= 3));
     const scrubbed = scrubBubbles(output.bubbles, state, previous, locale);
     const prefersSingle =
-      policy.intent === "none" ||
-      ["pushback", "postpone", "exit", "decision", "insistence"].includes(
-        state.lastUserKind,
-      );
+      source === "chat" &&
+      (policy.intent === "none" ||
+        ["pushback", "postpone", "exit", "decision", "insistence"].includes(
+          state.lastUserKind,
+        ));
     const bubbles = single || prefersSingle ? scrubbed.slice(0, 1) : scrubbed;
     const finalState =
       source === "chat"
