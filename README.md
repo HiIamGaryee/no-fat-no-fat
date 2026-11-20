@@ -43,6 +43,7 @@ Set `RUN_LIVE_GEMINI=1` only when intentionally running the real provider smoke 
 ## Deployment
 
 Live site: [https://astounding-tartufo-f4ea8d.netlify.app](https://astounding-tartufo-f4ea8d.netlify.app)
+Youtube Demo : [https://www.youtube.com/watch?v=VFZCJ5CqbGo](https://www.youtube.com/watch?v=VFZCJ5CqbGo)
 
 Vercel configuration is included. See [DEPLOYMENT.md](DEPLOYMENT.md).
 
