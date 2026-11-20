@@ -77,7 +77,7 @@ export const FoodDetectivePage = () => {
     const facts = { foodA: factualFood(foodA), foodB: factualFood(foodB) };
     try {
       const response = await sendChatMessage({
-        message: `Explain this nutrition-label comparison using only these supplied facts: ${JSON.stringify(facts)}. State that missing values are unknown, distinguish observation from suggestion, and do not label either food healthy, unhealthy, good, or bad. Do not invent values.${cravingContext ? ` User context: ${cravingContext}. If they want help interrupting a habitual craving, do not turn this into replacement-food suggestions.` : ""}`,
+        message: `Compare these nutrition labels using only the supplied facts: ${JSON.stringify(facts)}. State clearly whether Food A or Food B better fits the user's stated nutrition goal, if one is provided. If no goal is provided, summarize the meaningful differences and say that neither is universally healthier; explain that the better fit depends on the person's needs and serving size. State that missing values are unknown, distinguish label observations from suggestions, and never invent values. Do not say anyone must eat either food. Keep the answer concise.${cravingContext ? ` User context: ${cravingContext}. If they want help interrupting a habitual craving, do not turn this into replacement-food suggestions.` : ""}`,
         history: [],
         profile: toChatProfile(profile),
       });

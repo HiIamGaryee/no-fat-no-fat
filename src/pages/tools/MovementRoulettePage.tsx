@@ -22,14 +22,14 @@ import { createToolEvent } from "@/lib/tools/tool-events";
 import type { Mission } from "@/types/app";
 
 const activities = [
-  { title: "COMFORTABLE WALK", label: "WALK", category: "Walking", instruction: "Walk at a comfortable pace or use an equivalent movement.", modification: "March gently in place.", seated: false, quiet: false, rarity: "COMMON", cheer: "Left foot, right foot. You are literally winning." },
-  { title: "CHAIR MOBILITY", label: "CHAIR", category: "Seated Movement", instruction: "Move shoulders, ankles and arms comfortably while seated.", modification: "Use a smaller comfortable range.", seated: true, quiet: true, rarity: "COMMON", cheer: "Sitting down and still scoring points. Smooth." },
-  { title: "STRETCH BREAK", label: "STRETCH", category: "Stretching", instruction: "Choose gentle stretches that feel comfortable.", modification: "Stay seated and stretch arms and ankles.", seated: true, quiet: true, rarity: "COMMON", cheer: "Reach for the sky. Or at least the ceiling." },
-  { title: "STANDING RESET", label: "STAND", category: "Standing Break", instruction: "Stand, change position and move gently.", modification: "Shift posture while seated.", seated: false, quiet: true, rarity: "RARE", cheer: "Up you get. The couch never saw it coming." },
-  { title: "BEGINNER DANCE", label: "DANCE", category: "Beginner Dance", instruction: "Play one song and move in any comfortable way.", modification: "Dance with arms while seated.", seated: false, quiet: false, rarity: "EPIC", cheer: "Main character energy. Pick a banger." },
-  { title: "RECOVERY BREAK", label: "RECOVER", category: "Recovery Break", instruction: "Breathe, reset posture and take easy mobility movements.", modification: "Simply pause and breathe comfortably.", seated: true, quiet: true, rarity: "COMMON", cheer: "Rest is part of the game. Respect." },
-  { title: "GENTLE MOBILITY", label: "MOBILITY", category: "Gentle Mobility", instruction: "Circle joints gently and move without forcing range.", modification: "Choose two comfortable movements only.", seated: true, quiet: true, rarity: "RARE", cheer: "Smooth joints, smoother vibes." },
-  { title: "BODYWEIGHT BASICS", label: "BASICS", category: "Simple Bodyweight", instruction: "Try comfortable sit-to-stands or wall presses.", modification: "Use supported standing or arm presses.", seated: false, quiet: true, rarity: "EPIC", cheer: "Tiny reps, giant bragging rights." },
+  { title: "COMFORTABLE WALK", category: "Walking", instruction: "Walk at a comfortable pace or use an equivalent movement.", modification: "March gently in place.", seated: false, quiet: false, rarity: "COMMON", cheer: "Left foot, right foot. You are literally winning." },
+  { title: "CHAIR MOBILITY", category: "Seated Movement", instruction: "Move shoulders, ankles and arms comfortably while seated.", modification: "Use a smaller comfortable range.", seated: true, quiet: true, rarity: "COMMON", cheer: "Sitting down and still scoring points. Smooth." },
+  { title: "STRETCH BREAK", category: "Stretching", instruction: "Choose gentle stretches that feel comfortable.", modification: "Stay seated and stretch arms and ankles.", seated: true, quiet: true, rarity: "COMMON", cheer: "Reach for the sky. Or at least the ceiling." },
+  { title: "STANDING RESET", category: "Standing Break", instruction: "Stand, change position and move gently.", modification: "Shift posture while seated.", seated: false, quiet: true, rarity: "RARE", cheer: "Up you get. The couch never saw it coming." },
+  { title: "BEGINNER DANCE", category: "Beginner Dance", instruction: "Play one song and move in any comfortable way.", modification: "Dance with arms while seated.", seated: false, quiet: false, rarity: "EPIC", cheer: "Main character energy. Pick a banger." },
+  { title: "RECOVERY BREAK", category: "Recovery Break", instruction: "Breathe, reset posture and take easy mobility movements.", modification: "Simply pause and breathe comfortably.", seated: true, quiet: true, rarity: "COMMON", cheer: "Rest is part of the game. Respect." },
+  { title: "GENTLE MOBILITY", category: "Gentle Mobility", instruction: "Circle joints gently and move without forcing range.", modification: "Choose two comfortable movements only.", seated: true, quiet: true, rarity: "RARE", cheer: "Smooth joints, smoother vibes." },
+  { title: "BODYWEIGHT BASICS", category: "Simple Bodyweight", instruction: "Try comfortable sit-to-stands or wall presses.", modification: "Use supported standing or arm presses.", seated: false, quiet: true, rarity: "EPIC", cheer: "Tiny reps, giant bragging rights." },
 ] as const;
 
 const rarityStyle: Record<string, string> = {
@@ -243,22 +243,6 @@ export const MovementRoulettePage = () => {
                   <span className="absolute start-1/2 top-1 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-ink bg-white" />
                 </span>
               ))}
-              {activities.map((item, index) => {
-                const active = eligible.includes(item);
-                return (
-                  <span
-                    key={item.title}
-                    className="absolute inset-0"
-                    style={{ transform: `rotate(${index * 45 + 22.5}deg)` }}
-                  >
-                    <span
-                      className={`absolute start-1/2 top-6 -translate-x-1/2 font-display text-sm uppercase tracking-wide text-ink [writing-mode:vertical-rl] ${active ? "" : "opacity-25"}`}
-                    >
-                      {item.label}
-                    </span>
-                  </span>
-                );
-              })}
               <div className="absolute inset-[35%] grid place-items-center rounded-full border-4 border-ink bg-white">
                 <motion.div
                   animate={spinning ? { rotate: -360 } : { scale: [1, 1.12, 1] }}
